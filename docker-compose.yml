@@ -1,6 +1,7 @@
 version: '3'
 services:
-  web:
+  adonis:
+    container_name: adonis
     build: .
     command: adonis serve --dev
     ports:
@@ -8,13 +9,16 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - db
-  db:
+      - postgres
+  postgres:
+    container_name: postgres
     image: postgres:12.4
     environment:
       POSTGRES_DB: nlw
       POSTGRES_USER: nlw-user
       POSTGRES_PASSWORD: ignite
+    ports:
+      - 5432:5432
     volumes:
       - dbdata:/var/lib/postgresql/data
 volumes:
