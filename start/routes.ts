@@ -1,4 +1,5 @@
 import './routes/auth.routes'
+import './routes/habits.routes'
 
 import HealthCheck from '@ioc:Adonis/Core/HealthCheck'
 import Route from '@ioc:Adonis/Core/Route'
