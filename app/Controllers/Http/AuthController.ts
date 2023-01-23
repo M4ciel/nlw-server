@@ -1,20 +1,20 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import HttpStatusCode from 'App/Enum/HttpStatusCode.enum'
 import User from 'App/Models/User'
+import AuthService from 'App/Services/AuthService'
 import LoginValidator from 'App/Validators/Auth/LoginValidator'
 import RegisterValidator from 'App/Validators/Auth/RegisterValidator'
 
 import DefaultsController from './DefaultsController'
 
 export default class AuthController extends DefaultsController {
+    private authService = new AuthService()
     public async login({ request, auth, response }: HttpContextContract) {
-        const { email, password } = await request.validate(LoginValidator)
+        const userData = await request.validate(LoginValidator)
 
         try {
-            const token = await auth.use('api').attempt(email, password)
-
             return this.responseJson(response, HttpStatusCode.ACCEPTED, 'ACCEPTED', {
-                token: token,
+                token: await this.authService.validates(userData, auth),
             })
         } catch (error) {
             return this.responseJson(response, HttpStatusCode.UNAUTHORIZED, 'UNAUTHORIZED', error)

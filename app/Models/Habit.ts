@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import User from './User'
+import HabitWeekDate from './HabitWeekDate'
+import DateHabit from './DateHabit'
 
 export default class Habit extends BaseModel {
     @column({ isPrimary: true })
@@ -22,4 +24,10 @@ export default class Habit extends BaseModel {
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
     public updatedAt: DateTime
+
+    @hasMany(() => HabitWeekDate)
+    public habitWeekDate: HasMany<typeof HabitWeekDate>
+
+    @hasMany(() => DateHabit)
+    public dateHabit: HasMany<typeof DateHabit>
 }
